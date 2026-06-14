@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — BehaviorAgent</title>
+  <link rel="icon" href="data:,">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:system-ui,-apple-system,sans-serif; }
+    body { background:#0f172a; color:#e2e8f0; min-height:100vh; }
+    .nav { background:rgba(15,23,42,0.9);border-bottom:1px solid #1e293b;padding:0.8rem 2rem;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10; }
+    .nav h2 { font-size:1rem;color:#38bdf8;display:flex;align-items:center;gap:0.4rem; }
+    .nav h2 span { background:#38bdf8;color:#0f172a;padding:0.1rem 0.35rem;border-radius:3px;font-size:0.65rem; }
+    .nav .links { display:flex;gap:1rem;align-items:center; }
+    .nav .links a { color:#64748b;font-size:0.82rem;text-decoration:none; }
+    .nav .links a:hover { color:#38bdf8; }
+    .container { max-width:1200px;margin:0 auto;padding:1.5rem 2rem; }
+    .stats-row { display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem; }
+    .stat-card { background:#1e293b;border-radius:10px;padding:1.2rem 1.5rem;border:1px solid #1e293b; }
+    .stat-card .num { font-size:1.8rem;font-weight:700;color:#38bdf8; }
+    .stat-card .label { color:#64748b;font-size:0.8rem;margin-top:0.2rem; }
+    .grid-2 { display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem; }
+    @media (max-width:720px) { .stats-row { grid-template-columns:1fr 1fr; } .grid-2 { grid-template-columns:1fr; } }
+    .card { background:#1e293b;border-radius:10px;padding:1.5rem;border:1px solid #1e293b; }
+    .card h3 { font-size:0.9rem;color:#94a3b8;margin-bottom:1rem; }
+    .sentiment-bar { display:flex;height:28px;border-radius:6px;overflow:hidden;margin-bottom:0.8rem; }
+    .sentiment-bar .seg { display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:600;transition:0.3s;min-width:30px; }
+    .sentiment-list { display:grid;gap:0.4rem; }
+    .sentiment-item { display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0;border-bottom:1px solid #0f172a;font-size:0.85rem; }
+    .sentiment-item .name { display:flex;align-items:center;gap:0.4rem; }
+    .sentiment-item .dot { width:8px;height:8px;border-radius:50%;display:inline-block; }
+    .sentiment-item .count { color:#94a3b8; }
+    .service-bar { display:flex;flex-direction:column;gap:0.5rem; }
+    .service-row { display:flex;align-items:center;gap:0.5rem; }
+    .service-row .name { width:120px;font-size:0.82rem;color:#94a3b8;text-align:right; }
+    .service-row .bar { flex:1;height:18px;background:#0f172a;border-radius:4px;overflow:hidden; }
+    .service-row .bar .fill { height:100%;background:#38bdf8;border-radius:4px;transition:0.5s; }
+    .service-row .val { width:30px;font-size:0.8rem;color:#64748b; }
+    .events-list { max-height:400px;overflow-y:auto; }
+    .event-item { padding:0.5rem 0;border-bottom:1px solid #0f172a;font-size:0.8rem; }
+    .event-item .time { color:#64748b;font-size:0.72rem; }
+    .event-item .sent { display:inline-block;padding:0.1rem 0.4rem;border-radius:4px;font-size:0.7rem;font-weight:600; }
+    .event-item .detail { color:#94a3b8;margin-top:0.2rem; }
+    .sent-interested { background:rgba(34,197,94,0.15);color:#22c55e; }
+    .sent-price_sensitive { background:rgba(245,158,11,0.15);color:#f59e0b; }
+    .sent-confused { background:rgba(249,115,22,0.15);color:#f97316; }
+    .sent-abandoning { background:rgba(239,68,68,0.15);color:#ef4444; }
+    .sent-high_intent { background:rgba(56,189,248,0.15);color:#38bdf8; }
+    .sent-browsing { background:rgba(100,116,139,0.15);color:#64748b; }
+    .live-dot { display:inline-block;width:8px;height:8px;background:#22c55e;border-radius:50%;animation:pulse 1.5s infinite;margin-right:0.3rem; }
+    @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+    .empty { color:#475569;text-align:center;padding:2rem;font-size:0.9rem; }
+  </style>
+</head>
+<body>
+  <div class="nav">
+    <h2><span>BA</span> BehaviorAgent Admin</h2>
+    <div class="links">
+      <span class="live-dot"></span>
+      <span id="liveCount" style="color:#64748b;font-size:0.8rem;">0 sessions</span>
+      <a href="/">Home</a>
+      <a href="/services.html">Services</a>
+    </div>
+  </div>
+  <div class="container">
+    <div class="stats-row">
+      <div class="stat-card"><div class="num" id="totalSessions">0</div><div class="label">Total Sessions Tracked</div></div>
+      <div class="stat-card"><div class="num" id="topService">-</div><div class="label">Most Viewed Service</div></div>
+      <div class="stat-card"><div class="num" id="avgDiscount">0%</div><div class="label">Avg Discount Suggested</div></div>
+      <div class="stat-card"><div class="num" id="topSentiment">-</div><div class="label">Most Common Sentiment</div></div>
+    </div>
+    <div class="grid-2">
+      <div class="card"><h3>Sentiment Distribution</h3><div class="sentiment-bar" id="sentBar"></div><div class="sentiment-list" id="sentList"></div></div>
+      <div class="card"><h3>Top Services Interest</h3><div class="service-bar" id="serviceBar"></div></div>
+    </div>
+    <div class="card"><h3>Live Events Log <span style="color:#64748b;font-weight:400;font-size:0.78rem;">(last 20)</span></h3><div class="events-list" id="eventsList"></div></div>
+  </div>
+  <script>
+    const COLORS = { interested:'#22c55e', price_sensitive:'#f59e0b', confused:'#f97316', abandoning:'#ef4444', high_intent:'#38bdf8', browsing:'#64748b' };
+    const LABELS = { interested:'Interested', price_sensitive:'Price Sensitive', confused:'Confused', abandoning:'Abandoning', high_intent:'High Intent', browsing:'Browsing' };
+    async function loadStats() {
+      const res = await fetch('/api/stats');
+      const data = await res.json();
+      document.getElementById('totalSessions').textContent = data.total;
+      document.getElementById('avgDiscount').textContent = data.avgDiscount + '%';
+      const services = Object.entries(data.services).sort((a,b) => b[1] - a[1]);
+      document.getElementById('topService').textContent = services.length ? services[0][0] : '-';
+      const sents = Object.entries(data.sentiments).sort((a,b) => b[1] - a[1]);
+      document.getElementById('topSentiment').textContent = sents.length ? LABELS[sents[0][0]] || sents[0][0] : '-';
+      const total = data.total || 1;
+      document.getElementById('sentBar').innerHTML = sents.map(([k,v]) => `<div class="seg" style="flex:${v/total*100};background:${COLORS[k]||'#64748b'};color:#0f172a;">${Math.round(v/total*100)}%</div>`).join('');
+      document.getElementById('sentList').innerHTML = sents.map(([k,v]) => `<div class="sentiment-item"><span class="name"><span class="dot" style="background:${COLORS[k]||'#64748b'}"></span>${LABELS[k]||k}</span><span class="count">${v}</span></div>`).join('');
+      const maxSvc = services.length ? services[0][1] : 1;
+      const svcBar = document.getElementById('serviceBar');
+      svcBar.innerHTML = services.slice(0,6).map(([k,v]) => `<div class="service-row"><span class="name">${k}</span><div class="bar"><div class="fill" style="width:${v/maxSvc*100}%"></div></div><span class="val">${v}</span></div>`).join('');
+      if (!services.length) svcBar.innerHTML = '<div class="empty">No service interest tracked yet</div>';
+      const events = document.getElementById('eventsList');
+      if (!data.recent20 || !data.recent20.length) { events.innerHTML = '<div class="empty">No events yet.</div>'; return; }
+      events.innerHTML = data.recent20.map(r => {
+        const a = r.analysis || {}; const s = a.sentiment || 'browsing'; const time = new Date(r.time).toLocaleTimeString();
+        return `<div class="event-item"><div><span class="sent sent-${s}">${LABELS[s]||s}</span> <span class="time">${time}</span></div><div class="detail">${a.trigger || a.suggested_action || ''}${a.target_service ? ' ? ' + a.target_service : ''}${a.discount_percent ? ' (' + a.discount_percent + '% off)' : ''}</div></div>`;
+      }).join('');
+    }
+    loadStats();
+    setInterval(loadStats, 5000);
+  </script>
+</body>
+</html>

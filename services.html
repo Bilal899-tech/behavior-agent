@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Services � BehaviorAgent</title>
+  <link rel="icon" href="data:,">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:system-ui,-apple-system,sans-serif; }
+    html { scroll-behavior:smooth; }
+    body { background:#0f172a; color:#e2e8f0; }
+    a { color:#38bdf8; text-decoration:none; }
+    .nav { position:fixed;top:0;width:100%;z-index:100;background:rgba(15,23,42,0.85);backdrop-filter:blur(12px);border-bottom:1px solid #1e293b;display:flex;justify-content:space-between;align-items:center;padding:0.8rem 2rem; }
+    .nav .logo { font-weight:700;color:#38bdf8;font-size:1.15rem;display:flex;align-items:center;gap:0.4rem; }
+    .nav .logo span { background:#38bdf8;color:#0f172a;font-size:0.65rem;padding:0.15rem 0.4rem;border-radius:4px;font-weight:700; }
+    .nav-links { display:flex;gap:1.5rem;align-items:center; }
+    .nav-links a { color:#94a3b8;font-size:0.85rem;transition:0.2s; }
+    .nav-links a:hover, .nav-links a.active { color:#38bdf8; }
+    .nav-links .cta-nav { background:#38bdf8;color:#0f172a;padding:0.4rem 1rem;border-radius:6px;font-weight:600;font-size:0.82rem; }
+    .nav-links .badge-link { position:relative; }
+    .nav-links .badge-link .live-badge { position:absolute;top:-6px;right:-8px;width:7px;height:7px;background:#22c55e;border-radius:50%;animation:pulse 1.5s infinite; }
+    @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+    .search-overlay { position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,23,42,0.92);backdrop-filter:blur(8px);z-index:999;display:none;padding:5rem 2rem;overflow-y:auto; }
+    .search-overlay.open { display:block; }
+    .search-overlay input { width:100%;max-width:600px;display:block;margin:0 auto 2rem;padding:1rem 1.2rem;background:#1e293b;border:1px solid #334155;border-radius:12px;color:#e2e8f0;font-size:1.1rem;outline:none; }
+    .search-overlay input:focus { border-color:#38bdf8; }
+    .search-overlay .search-close { position:absolute;top:1.5rem;right:2rem;background:none;border:none;color:#64748b;font-size:1.5rem;cursor:pointer; }
+    .search-overlay .search-close:hover { color:#ef4444; }
+    .search-results { max-width:600px;margin:0 auto;display:grid;gap:0.8rem; }
+    .search-result { background:#1e293b;border-radius:10px;padding:1rem 1.2rem;border:1px solid #1e293b;transition:0.2s;cursor:pointer;display:flex;justify-content:space-between;align-items:center; }
+    .search-result:hover { border-color:#38bdf8; }
+    .search-result .sr-name { color:#e2e8f0;font-size:0.9rem; }
+    .search-result .sr-price { color:#38bdf8;font-weight:600;font-size:0.85rem; }
+    .search-result .sr-tag { font-size:0.72rem;color:#22c55e;background:rgba(34,197,94,0.1);padding:0.15rem 0.4rem;border-radius:4px; }
+    .section { min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:5rem 2rem;position:relative; }
+    .section-inner { max-width:1100px;margin:0 auto;width:100%; }
+    .page-header { text-align:center;padding:4rem 2rem 2rem; }
+    .page-header h1 { font-size:2.5rem;margin-bottom:0.5rem; }
+    .page-header h1 em { color:#38bdf8;font-style:normal; }
+    .page-header p { color:#64748b;max-width:600px;margin:0 auto; }
+    .breadcrumb { color:#64748b;font-size:0.8rem;margin-bottom:0.5rem; }
+    .breadcrumb span { color:#94a3b8; }
+    .services-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem; }
+    .service-card { background:#1e293b;border-radius:12px;padding:2rem 1.5rem;border:1px solid #1e293b;transition:0.3s;position:relative;overflow:hidden; }
+    .service-card::before { content:'';position:absolute;top:0;left:0;right:0;height:3px;background:#334155;transition:0.3s; }
+    .service-card:hover::before { background:#38bdf8; }
+    .service-card:hover { border-color:#334155;transform:translateY(-4px);box-shadow:0 8px 24px rgba(56,189,248,0.08); }
+    .service-card .s-icon { font-size:2.5rem;margin-bottom:1rem;display:block; }
+    .service-card h3 { color:#e2e8f0;font-size:1.1rem;margin-bottom:0.5rem; }
+    .service-card p { color:#64748b;font-size:0.85rem;line-height:1.5;margin-bottom:1rem;min-height:50px; }
+    .service-card .s-price { font-weight:700;color:#38bdf8;font-size:1.2rem;margin-bottom:0.5rem; }
+    .service-card .s-price span { font-size:0.8rem;color:#64748b;font-weight:400; }
+    .service-card .btn-service { background:#334155;color:#e2e8f0;border:none;padding:0.6rem 1.2rem;border-radius:6px;font-weight:600;font-size:0.82rem;cursor:pointer;transition:0.2s; }
+    .service-card .btn-service:hover { background:#38bdf8;color:#0f172a; }
+    @media (max-width:720px) { .services-grid { grid-template-columns:1fr 1fr; } }
+    @media (max-width:480px) { .services-grid { grid-template-columns:1fr; } }
+    .compare-section { text-align:center; }
+    .compare-section h2 { font-size:2rem;margin-bottom:1.5rem; }
+    .compare-section h2 em { color:#38bdf8;font-style:normal; }
+    .compare-table { width:100%;border-collapse:collapse;background:#1e293b;border-radius:12px;overflow:hidden; }
+    .compare-table th { background:#0f172a;color:#94a3b8;font-size:0.8rem;text-transform:uppercase;letter-spacing:0.5px;padding:1rem 1.2rem;text-align:left; }
+    .compare-table td { color:#cbd5e1;font-size:0.88rem;padding:0.9rem 1.2rem;border-bottom:1px solid #0f172a; }
+    .compare-table tr:last-child td { border-bottom:none; }
+    .compare-table td:first-child { color:#94a3b8;font-weight:500; }
+    .compare-table .check { color:#22c55e; }
+    .compare-table .cross { color:#ef4444; }
+    @media (max-width:600px) { .compare-table { font-size:0.82rem; } .compare-table th, .compare-table td { padding:0.7rem 0.8rem; } }
+    .checkout-section { }
+    .checkout-section h2 { font-size:2rem;margin-bottom:0.5rem;text-align:center; }
+    .checkout-section h2 em { color:#38bdf8;font-style:normal; }
+    .checkout-section > p { text-align:center;color:#64748b;margin-bottom:2rem; }
+    .checkout-grid { display:grid;grid-template-columns:1fr 0.8fr;gap:2rem; }
+    .checkout-form { background:#1e293b;border-radius:12px;padding:2rem;border:1px solid #1e293b; }
+    .checkout-form .form-group { margin-bottom:1.2rem; }
+    .checkout-form label { display:block;color:#94a3b8;font-size:0.82rem;margin-bottom:0.4rem;font-weight:500; }
+    .checkout-form input, .checkout-form select, .checkout-form textarea { width:100%;padding:0.75rem 1rem;background:#0f172a;border:1px solid #334155;border-radius:8px;color:#e2e8f0;font-size:0.9rem;outline:none;transition:0.2s; }
+    .checkout-form input:focus, .checkout-form select:focus, .checkout-form textarea:focus { border-color:#38bdf8; }
+    .checkout-form textarea { resize:vertical;min-height:80px; }
+    .checkout-form .form-row { display:grid;grid-template-columns:1fr 1fr;gap:1rem; }
+    .checkout-form .discount-row { display:flex;gap:0.5rem; }
+    .checkout-form .discount-row input { flex:1; }
+    .checkout-form .discount-row button { padding:0.75rem 1rem;background:#334155;color:#e2e8f0;border:none;border-radius:8px;font-weight:600;cursor:pointer;white-space:nowrap; }
+    .checkout-form .discount-row button:hover { background:#475569; }
+    .checkout-form .btn-submit { width:100%;padding:1rem;background:#38bdf8;color:#0f172a;border:none;border-radius:8px;font-weight:700;font-size:1rem;cursor:pointer;transition:0.2s;margin-top:0.5rem; }
+    .checkout-form .btn-submit:hover { background:#0ea5e9; }
+    .order-summary { background:#1e293b;border-radius:12px;padding:2rem;border:1px solid #1e293b;position:sticky;top:90px;align-self:start; }
+    .order-summary h3 { color:#e2e8f0;font-size:1.1rem;margin-bottom:1.2rem;padding-bottom:0.8rem;border-bottom:1px solid #0f172a; }
+    .order-item { display:flex;justify-content:space-between;padding:0.6rem 0;border-bottom:1px solid #0f172a; }
+    .order-item .name { color:#94a3b8;font-size:0.88rem; }
+    .order-item .price { color:#e2e8f0;font-weight:600;font-size:0.9rem; }
+    .order-total { display:flex;justify-content:space-between;padding:1rem 0 0;margin-top:0.5rem;border-top:1px solid #334155; }
+    .order-total .label { color:#94a3b8;font-weight:500; }
+    .order-total .amount { font-size:1.3rem;font-weight:700;color:#38bdf8; }
+    .order-summary .discount-tag { background:rgba(34,197,94,0.1);color:#22c55e;padding:0.5rem 0.8rem;border-radius:6px;font-size:0.82rem;margin:0.5rem 0;display:none;text-align:center;font-weight:500; }
+    @media (max-width:720px) { .checkout-grid { grid-template-columns:1fr; } .checkout-form .form-row { grid-template-columns:1fr; } }
+    .confirmation { text-align:center;min-height:40vh;display:none; }
+    .confirmation .check-icon { font-size:4rem;margin-bottom:1rem;display:block; }
+    .confirmation h2 { color:#22c55e;font-size:2rem;margin-bottom:0.5rem; }
+    .confirmation p { color:#94a3b8; }
+    .footer-bottom { text-align:center;padding:1.5rem;color:#475569;font-size:0.78rem;border-top:1px solid #1e293b; }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="logo">Behavior<span>AI</span></div>
+    <div class="nav-links">
+      <a href="#" onclick="toggleSearch(event)" id="searchLink">🔍 Search</a>
+      <a href="/">Home</a>
+      <a href="/services.html" class="active">Services</a>
+      <a href="/admin.html" class="badge-link">Dashboard <span class="live-badge"></span></a>
+      <a href="#checkout" class="cta-nav">Get Started</a>
+    </div>
+  </nav>
+
+  <div class="search-overlay" id="searchOverlay">
+    <button class="search-close" onclick="toggleSearch()">✕</button>
+    <input type="text" id="searchInput" placeholder="Search services..." oninput="doSearch(this.value)" />
+    <div class="search-results" id="searchResults"></div>
+  </div>
+
+  <section class="page-header">
+    <div class="breadcrumb"><a href="/">Home</a> / <span>Services</span></div>
+    <h1>Our <em>Services</em></h1>
+    <p>Comprehensive AI-powered behavior tracking and engagement solutions for your business.</p>
+  </section>
+
+  <section class="section" data-section="services-list" data-track="services-list" style="padding-top:0;">
+    <div class="section-inner">
+      <div class="services-grid">
+        <div class="service-card" data-track="service-web-dev">
+          <span class="s-icon">??</span>
+          <h3>Web Development</h3>
+          <p>Full-stack web development with AI-powered behavior tracking built-in. Modern frameworks, responsive design.</p>
+          <div class="s-price">$1,499<span>/project</span></div>
+          <button class="btn-service" onclick="selectService('Web Development',1499)">Book Now</button>
+        </div>
+        <div class="service-card" data-track="service-seo">
+          <span class="s-icon">??</span>
+          <h3>SEO Optimization</h3>
+          <p>Data-driven SEO strategies powered by user behavior analysis. Climb rankings by understanding your audience.</p>
+          <div class="s-price">$899<span>/month</span></div>
+          <button class="btn-service" onclick="selectService('SEO Optimization',899)">Book Now</button>
+        </div>
+        <div class="service-card" data-track="service-ux">
+          <span class="s-icon">??</span>
+          <h3>UX Design</h3>
+          <p>User experience design backed by real behavior data. Create interfaces that convert visitors into customers.</p>
+          <div class="s-price">$2,499<span>/project</span></div>
+          <button class="btn-service" onclick="selectService('UX Design',2499)">Book Now</button>
+        </div>
+        <div class="service-card" data-track="service-mobile">
+          <span class="s-icon">??</span>
+          <h3>Mobile App Dev</h3>
+          <p>iOS and Android apps with integrated behavior analytics. Track exactly how users interact with your app.</p>
+          <div class="s-price">$3,999<span>/project</span></div>
+          <button class="btn-service" onclick="selectService('Mobile App Dev',3999)">Book Now</button>
+        </div>
+        <div class="service-card" data-track="service-content">
+          <span class="s-icon">??</span>
+          <h3>Content Strategy</h3>
+          <p>AI-optimized content that resonates with your audience. Behavior data tells us exactly what they want to read.</p>
+          <div class="s-price">$599<span>/month</span></div>
+          <button class="btn-service" onclick="selectService('Content Strategy',599)">Book Now</button>
+        </div>
+        <div class="service-card" data-track="service-analytics">
+          <span class="s-icon">??</span>
+          <h3>Analytics Setup</h3>
+          <p>Custom analytics dashboards with AI behavior insights. Know what every visitor does on your site.</p>
+          <div class="s-price">$1,199<span>/setup</span></div>
+          <button class="btn-service" onclick="selectService('Analytics Setup',1199)">Book Now</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section compare-section" data-section="comparison" data-track="comparison-section">
+    <div class="section-inner">
+      <h2>Compare <em>Our Plans</em></h2>
+      <table class="compare-table">
+        <thead><tr><th>Feature</th><th>Basic</th><th>Growth</th><th>Enterprise</th></tr></thead>
+        <tbody>
+          <tr><td>AI Behavior Tracking</td><td class="check">? Basic</td><td class="check">? Advanced</td><td class="check">? Custom AI</td></tr>
+          <tr><td>Real-Time Analytics</td><td class="check">?</td><td class="check">?</td><td class="check">?</td></tr>
+          <tr><td>Sentiment Analysis</td><td class="cross">?</td><td class="check">?</td><td class="check">?</td></tr>
+          <tr><td>Smart Discount Engine</td><td class="cross">?</td><td class="check">?</td><td class="check">?</td></tr>
+          <tr><td>Exit Intent Detection</td><td class="cross">?</td><td class="check">?</td><td class="check">?</td></tr>
+          <tr><td>Custom Templates</td><td class="cross">?</td><td class="check">?</td><td class="check">?</td></tr>
+          <tr><td>API Access</td><td class="cross">?</td><td class="cross">?</td><td class="check">? Full API</td></tr>
+          <tr><td>White Label</td><td class="cross">?</td><td class="cross">?</td><td class="check">?</td></tr>
+          <tr><td>Dedicated Support</td><td class="cross">?</td><td class="check">? Priority</td><td class="check">? 24/7</td></tr>
+          <tr><td>Monthly Sessions</td><td>1,000</td><td>10,000</td><td>Unlimited</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section checkout-section" id="checkout" data-section="checkout" data-track="checkout-section">
+    <div class="section-inner">
+      <h2>Start Your <em>Journey</em></h2>
+      <p>Fill in your details and we'll set up your AI behavior agent within 24 hours.</p>
+      <div class="checkout-grid">
+        <div class="checkout-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" id="fullName" placeholder="John Doe" data-track="checkout-name" />
+            </div>
+            <div class="form-group">
+              <label>Email Address</label>
+              <input type="email" id="email" placeholder="john@company.com" data-track="checkout-email" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Select Service</label>
+            <select id="serviceSelect" data-track="checkout-service" onchange="updateService()">
+              <option value="">� Choose a service �</option>
+              <option value="Web Development|1499">Web Development � $1,499</option>
+              <option value="SEO Optimization|899">SEO Optimization � $899/mo</option>
+              <option value="UX Design|2499">UX Design � $2,499</option>
+              <option value="Mobile App Dev|3999">Mobile App Dev � $3,999</option>
+              <option value="Content Strategy|599">Content Strategy � $599/mo</option>
+              <option value="Analytics Setup|1199">Analytics Setup � $1,199</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Company Name</label>
+            <input type="text" id="company" placeholder="Your Company Ltd." data-track="checkout-company" />
+          </div>
+          <div class="form-group">
+            <label>Project Details</label>
+            <textarea id="details" placeholder="Tell us about your project requirements, timeline, and any specific needs..." data-track="checkout-details"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Discount Code</label>
+            <div class="discount-row">
+              <input type="text" id="discountCode" placeholder="Enter code" data-track="checkout-discount" />
+              <button onclick="applyDiscount()">Apply</button>
+            </div>
+          </div>
+          <button class="btn-submit" data-track="checkout-submit" onclick="submitOrder()">Confirm & Start</button>
+        </div>
+        <div class="order-summary">
+          <h3>Order Summary</h3>
+          <div class="order-item"><span class="name">Service</span><span class="price" id="summaryService">Not selected</span></div>
+          <div class="order-item"><span class="name">Setup Fee</span><span class="price">Free</span></div>
+          <div class="order-item"><span class="name">AI Configuration</span><span class="price">Included</span></div>
+          <div class="discount-tag" id="discountTag">?? 20% discount applied!</div>
+          <div class="order-item" id="discountRow" style="display:none;"><span class="name">Discount</span><span class="price" id="discountAmount" style="color:#22c55e;">-$0</span></div>
+          <div class="order-total"><span class="label">Total</span><span class="amount" id="totalAmount">$0</span></div>
+          <div style="color:#64748b;font-size:0.75rem;margin-top:0.8rem;line-height:1.5;">
+            <div>? 14-day money-back guarantee</div>
+            <div>? No hidden fees</div>
+            <div>? Free onboarding support</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="confirmation section" id="confirmation">
+    <div class="section-inner">
+      <span class="check-icon">?</span>
+      <h2>Order Confirmed!</h2>
+      <p>We've received your request. Our team will reach out within 24 hours to set up your AI behavior agent.</p>
+      <p style="margin-top:1rem;"><a href="/" style="color:#38bdf8;">? Back to Home</a></p>
+    </div>
+  </section>
+
+  <div class="footer-bottom">� 2026 BehaviorAgent � AI-Powered Engagement Platform. All rights reserved.</div>
+
+  <div id="toastContainer"></div>
+  <script src="/behavior.js"></script>
+  <script src="/chat.js"></script>
+  <script>
+    const SERVICES = [
+      { name:'Web Development', price:1499, period:'project', tags:['web','development','full-stack','responsive'] },
+      { name:'SEO Optimization', price:899, period:'month', tags:['seo','search','rankings','traffic'] },
+      { name:'UX Design', price:2499, period:'project', tags:['ux','design','interface','user-experience'] },
+      { name:'Mobile App Dev', price:3999, period:'project', tags:['mobile','app','ios','android'] },
+      { name:'Content Strategy', price:599, period:'month', tags:['content','writing','blog','seo'] },
+      { name:'Analytics Setup', price:1199, period:'setup', tags:['analytics','tracking','data','insights'] }
+    ];
+    function toggleSearch(e) { if(e)e.preventDefault(); const o=document.getElementById('searchOverlay'); o.classList.toggle('open'); if(o.classList.contains('open')){document.getElementById('searchInput').focus();doSearch('');} }
+    function doSearch(q) {
+      const r = document.getElementById('searchResults');
+      const lower = q.toLowerCase();
+      const interest = window.__behaviorInterest ? window.__behaviorInterest.toLowerCase() : '';
+      const matches = SERVICES.filter(s => !q || s.name.toLowerCase().includes(lower) || s.tags.some(t => t.includes(lower)));
+      const sorted = matches.sort((a,b) => {
+        const aInt = interest && a.name.toLowerCase().includes(interest) ? -1 : 0;
+        const bInt = interest && b.name.toLowerCase().includes(interest) ? -1 : 0;
+        return aInt - bInt;
+      });
+      if (interest && !q) {
+        r.innerHTML = SERVICES.filter(s => s.name.toLowerCase().includes(interest)).map(s =>
+          `<div class="search-result" onclick="selectSearch('${s.name}')"><span><span class="sr-name">${s.name}</span> <span class="sr-tag">Based on your interest</span></span><span class="sr-price">$${s.price}/${s.period}</span></div>`
+        ).join('') + '<div style="color:#334155;text-align:center;padding:0.5rem 0;font-size:0.8rem;">Other services</div>' + matches.filter(s => !s.name.toLowerCase().includes(interest)).map(s =>
+          `<div class="search-result" onclick="selectSearch('${s.name}')"><span class="sr-name">${s.name}</span><span class="sr-price">$${s.price}/${s.period}</span></div>`
+        ).join('');
+      } else {
+        r.innerHTML = sorted.length ? sorted.map(s =>
+          `<div class="search-result" onclick="selectSearch('${s.name}')"><span class="sr-name">${s.name}</span><span class="sr-price">$${s.price}/${s.period}</span></div>`
+        ).join('') : '<div class="search-result" style="cursor:default;border-color:transparent;justify-content:center;color:#64748b;">No services found</div>';
+      }
+    }
+    function selectSearch(name) {
+      toggleSearch();
+      const slug = name.toLowerCase().replace(/[^a-z]/g,'-');
+      const el = document.querySelector(`[data-track="service-${slug}"]`);
+      if (el) el.scrollIntoView({ behavior:'smooth', block:'center' });
+    }
+    window.addEventListener('behavior:interest', (e) => {
+      const s = document.getElementById('searchLink');
+      if (e.detail && e.detail.service) s.textContent = '🔍 ' + e.detail.service;
+    });
+    let selectedService = '';
+    let selectedPrice = 0;
+    let appliedDiscount = 0;
+
+    function selectService(name, price) {
+      selectedService = name;
+      selectedPrice = price;
+      document.getElementById('serviceSelect').value = name + '|' + price;
+      updateSummary();
+      document.getElementById('checkout').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function updateService() {
+      const val = document.getElementById('serviceSelect').value;
+      if (!val) { selectedService = ''; selectedPrice = 0; }
+      else { const parts = val.split('|'); selectedService = parts[0]; selectedPrice = parseInt(parts[1]); }
+      updateSummary();
+    }
+
+    function updateSummary() {
+      document.getElementById('summaryService').textContent = selectedService || 'Not selected';
+      const total = selectedPrice - (selectedPrice * appliedDiscount / 100);
+      document.getElementById('totalAmount').textContent = '$' + total;
+    }
+
+    function applyDiscount() {
+      const code = document.getElementById('discountCode').value.trim().toLowerCase();
+      if (code === 'welcome20') { appliedDiscount = 20; document.getElementById('discountTag').style.display = 'block'; document.getElementById('discountRow').style.display = 'flex'; document.getElementById('discountAmount').textContent = '-$' + Math.round(selectedPrice * 0.2); updateSummary(); }
+      else if (code === 'early10') { appliedDiscount = 10; document.getElementById('discountTag').textContent = '🎉 10% early bird discount!'; document.getElementById('discountTag').style.display = 'block'; document.getElementById('discountRow').style.display = 'flex'; document.getElementById('discountAmount').textContent = '-$' + Math.round(selectedPrice * 0.1); updateSummary(); }
+      else { alert('Invalid discount code'); }
+    }
+
+    function submitOrder() {
+      const name = document.getElementById('fullName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      if (!name || !email || !selectedService) { alert('Please fill in your name, email, and select a service.'); return; }
+      document.querySelector('.checkout-section').style.display = 'none';
+      document.getElementById('confirmation').style.display = 'flex';
+      document.getElementById('confirmation').scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>

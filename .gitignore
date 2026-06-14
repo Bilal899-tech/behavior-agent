@@ -1,0 +1,9 @@
+node_modules/
+.env
+uploads/
+data/
+posts/
+*.log
+start_test.txt
+start_err.txt
+.DS_Store
