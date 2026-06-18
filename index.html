@@ -10,122 +10,138 @@
   <style>
     * { margin:0; padding:0; box-sizing:border-box; font-family:system-ui,-apple-system,sans-serif; }
     html { scroll-behavior:smooth; }
-    body { background:#0f172a; color:#e2e8f0; }
-    a { color:#38bdf8; text-decoration:none; }
-    .nav { position:fixed;top:0;width:100%;z-index:100;background:rgba(15,23,42,0.85);backdrop-filter:blur(12px);border-bottom:1px solid #1e293b;display:flex;justify-content:space-between;align-items:center;padding:0.8rem 2rem; }
-    .nav .logo { font-weight:700;color:#38bdf8;font-size:1.15rem;display:flex;align-items:center;gap:0.4rem; }
-    .nav .logo span { background:#38bdf8;color:#0f172a;font-size:0.65rem;padding:0.15rem 0.4rem;border-radius:4px;font-weight:700; }
+    body { background:#ffffff; color:#1a1a1a; }
+    a { color:#2563eb; text-decoration:none; }
+    .nav { position:fixed;top:0;width:100%;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center;padding:0.8rem 2rem;animation:navslide 0.6s ease-out 0.2s both; }
+    @keyframes navslide { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
+    .nav .logo { font-weight:700;color:#2563eb;font-size:1.15rem;display:flex;align-items:center;gap:0.4rem; }
+    .nav .logo span { background:#2563eb;color:#ffffff;font-size:0.65rem;padding:0.15rem 0.4rem;border-radius:4px;font-weight:700; }
     .nav-links { display:flex;gap:1.5rem;align-items:center; }
-    .nav-links a { color:#94a3b8;font-size:0.85rem;transition:0.2s; }
-    .nav-links a:hover, .nav-links a.active { color:#38bdf8; }
-    .nav-links .cta-nav { background:#38bdf8;color:#0f172a;padding:0.4rem 1rem;border-radius:6px;font-weight:600;font-size:0.82rem; }
-    .nav-links .cta-nav:hover { background:#0ea5e9; }
+    .nav-links a { color:#6b7280;font-size:0.85rem;transition:0.2s; }
+    .nav-links a:hover, .nav-links a.active { color:#2563eb; }
+    .nav-links .cta-nav { background:#2563eb;color:#ffffff;padding:0.4rem 1rem;border-radius:6px;font-weight:600;font-size:0.82rem; }
+    .nav-links .cta-nav:hover { background:#1d4ed8; }
     .nav-links .badge-link { position:relative; }
-    .nav-links .badge-link .live-badge { position:absolute;top:-6px;right:-8px;width:7px;height:7px;background:#22c55e;border-radius:50%;animation:pulse 1.5s infinite; }
+    .nav-links .badge-link .live-badge { position:absolute;top:-6px;right:-8px;width:7px;height:7px;background:#2563eb;border-radius:50%;animation:pulse 1.5s infinite; }
     @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
-    .search-overlay { position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,23,42,0.92);backdrop-filter:blur(8px);z-index:999;display:none;padding:5rem 2rem;overflow-y:auto; }
+    .search-overlay { position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(255,255,255,0.95);backdrop-filter:blur(8px);z-index:999;display:none;padding:5rem 2rem;overflow-y:auto; }
     .search-overlay.open { display:block; }
-    .search-overlay input { width:100%;max-width:600px;display:block;margin:0 auto 2rem;padding:1rem 1.2rem;background:#1e293b;border:1px solid #334155;border-radius:12px;color:#e2e8f0;font-size:1.1rem;outline:none; }
-    .search-overlay input:focus { border-color:#38bdf8; }
-    .search-overlay .search-close { position:absolute;top:1.5rem;right:2rem;background:none;border:none;color:#64748b;font-size:1.5rem;cursor:pointer; }
-    .search-overlay .search-close:hover { color:#ef4444; }
+    .search-overlay input { width:100%;max-width:600px;display:block;margin:0 auto 2rem;padding:1rem 1.2rem;background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;color:#1a1a1a;font-size:1.1rem;outline:none; }
+    .search-overlay input:focus { border-color:#2563eb; }
+    .search-overlay .search-close { position:absolute;top:1.5rem;right:2rem;background:none;border:none;color:#6b7280;font-size:1.5rem;cursor:pointer; }
+    .search-overlay .search-close:hover { color:#dc2626; }
     .search-results { max-width:600px;margin:0 auto;display:grid;gap:0.8rem; }
-    .search-result { background:#1e293b;border-radius:10px;padding:1rem 1.2rem;border:1px solid #1e293b;transition:0.2s;cursor:pointer;display:flex;justify-content:space-between;align-items:center; }
-    .search-result:hover { border-color:#38bdf8; }
-    .search-result .sr-name { color:#e2e8f0;font-size:0.9rem; }
-    .search-result .sr-price { color:#38bdf8;font-weight:600;font-size:0.85rem; }
-    .search-result .sr-tag { font-size:0.72rem;color:#22c55e;background:rgba(34,197,94,0.1);padding:0.15rem 0.4rem;border-radius:4px; }
+    .search-result { background:#f9fafb;border-radius:10px;padding:1rem 1.2rem;border:1px solid #e5e7eb;transition:0.2s;cursor:pointer;display:flex;justify-content:space-between;align-items:center; }
+    .search-result:hover { border-color:#2563eb; }
+    .search-result .sr-name { color:#1a1a1a;font-size:0.9rem; }
+    .search-result .sr-price { color:#2563eb;font-weight:600;font-size:0.85rem; }
+    .search-result .sr-tag { font-size:0.72rem;color:#2563eb;background:rgba(37,99,235,0.1);padding:0.15rem 0.4rem;border-radius:4px; }
     .section { min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:5rem 2rem;position:relative; }
     .section-inner { max-width:1100px;margin:0 auto;width:100%; }
-    .hero { background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);overflow:hidden; }
-    .hero::before { content:'';position:absolute;top:-50%;right:-20%;width:600px;height:600px;background:radial-gradient(circle,rgba(56,189,248,0.08) 0%,transparent 70%);pointer-events:none; }
+    .hero { background:#ffffff;overflow:hidden; }
+    .hero::before { content:'';position:absolute;top:-50%;right:-20%;width:600px;height:600px;background:radial-gradient(circle,rgba(29,78,216,0.06) 0%,transparent 70%);pointer-events:none; }
     .hero-grid { display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center; }
-    .hero h1 { font-size:3.2rem;font-weight:800;line-height:1.2;margin-bottom:1.2rem; }
-    .hero h1 em { font-style:normal;color:#38bdf8; }
-    .hero p { color:#94a3b8;font-size:1.1rem;line-height:1.7;margin-bottom:2rem;max-width:520px; }
+    .hero h1 { font-size:3.2rem;font-weight:800;line-height:1.2;margin-bottom:1.2rem;color:#1a1a1a; }
+    .hero h1 em { font-style:normal;color:#2563eb; }
+    .hero p { color:#6b7280;font-size:1.1rem;line-height:1.7;margin-bottom:2rem;max-width:520px; }
     .hero-btns { display:flex;gap:0.8rem; }
-    .hero-btns .btn-primary { background:#38bdf8;color:#0f172a;padding:0.85rem 2rem;border-radius:8px;font-weight:700;font-size:0.95rem;border:none;cursor:pointer;transition:0.2s; }
-    .hero-btns .btn-primary:hover { background:#0ea5e9;transform:translateY(-2px); }
-    .hero-btns .btn-secondary { background:transparent;color:#94a3b8;padding:0.85rem 2rem;border-radius:8px;font-weight:600;font-size:0.95rem;border:1px solid #334155;cursor:pointer;transition:0.2s; }
-    .hero-btns .btn-secondary:hover { border-color:#38bdf8;color:#38bdf8; }
-    .hero-visual { background:#1e293b;border-radius:16px;padding:2rem;height:380px;display:flex;flex-direction:column;justify-content:center;border:1px solid #334155;position:relative;overflow:hidden; }
-    .hero-visual .orb { width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(56,189,248,0.2),transparent);position:absolute;animation:float 6s ease-in-out infinite; }
+    .hero-btns .btn-primary { background:#2563eb;color:#ffffff;padding:0.85rem 2rem;border-radius:8px;font-weight:700;font-size:0.95rem;border:none;cursor:pointer;transition:0.2s; }
+    .hero-btns .btn-primary:hover { background:#1d4ed8;transform:translateY(-2px); }
+    .hero-btns .btn-secondary { background:transparent;color:#6b7280;padding:0.85rem 2rem;border-radius:8px;font-weight:600;font-size:0.95rem;border:1px solid #e5e7eb;cursor:pointer;transition:0.2s; }
+    .hero-btns .btn-secondary:hover { border-color:#2563eb;color:#2563eb; }
+    .hero-visual { background:#f9fafb;border-radius:16px;padding:2rem;height:380px;display:flex;flex-direction:column;justify-content:center;border:1px solid #e5e7eb;position:relative;overflow:hidden; }
+    .hero-visual .orb { width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(29,78,216,0.15),transparent);position:absolute;animation:float 6s ease-in-out infinite; }
     .hero-visual .orb:nth-child(1) { top:20%;left:15%;animation-delay:0s; }
     .hero-visual .orb:nth-child(2) { bottom:20%;right:20%;width:80px;height:80px;animation-delay:2s; }
     .hero-visual .orb:nth-child(3) { top:50%;left:60%;width:60px;height:60px;animation-delay:4s; }
     .hero-visual .stats-mini { position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:1rem; }
-    .hero-visual .stat-mini { background:rgba(15,23,42,0.6);padding:1rem;border-radius:8px;text-align:center; }
-    .hero-visual .stat-mini .num { color:#38bdf8;font-size:1.5rem;font-weight:700; }
-    .hero-visual .stat-mini .label { color:#64748b;font-size:0.75rem; }
+    .hero-visual .stat-mini { background:rgba(255,255,255,0.8);padding:1rem;border-radius:8px;text-align:center;border:1px solid #e5e7eb; }
+    .hero-visual .stat-mini .num { color:#2563eb;font-size:1.5rem;font-weight:700; }
+    .hero-visual .stat-mini .label { color:#6b7280;font-size:0.75rem; }
     @keyframes float { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-20px); } }
     @media (max-width:720px) { .hero-grid { grid-template-columns:1fr; } .hero h1 { font-size:2rem; } .hero-visual { height:260px; } }
-    .features h2 { text-align:center;font-size:2rem;margin-bottom:0.8rem; }
-    .features h2 em { color:#38bdf8;font-style:normal; }
-    .features > p { text-align:center;color:#64748b;margin-bottom:2.5rem; }
+    .features h2 { text-align:center;font-size:2rem;margin-bottom:0.8rem;color:#1d4ed8; }
+    .features h2 em { color:#1d4ed8;font-style:normal; }
+    .features > p { text-align:center;color:#6b7280;margin-bottom:2.5rem; }
     .feat-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:1rem; }
-    .feat-card { background:#1e293b;border-radius:12px;padding:2rem 1.5rem;text-align:center;border:1px solid #1e293b;transition:0.3s;cursor:default; }
-    .feat-card:hover { border-color:#38bdf8;transform:translateY(-4px);box-shadow:0 8px 24px rgba(56,189,248,0.1); }
+    .feat-card { background:#f9fafb;border-radius:12px;padding:2rem 1.5rem;text-align:center;border:1px solid #e5e7eb;transition:0.3s;cursor:default; }
+    .feat-card:hover { border-color:#2563eb;transform:translateY(-4px);box-shadow:0 8px 24px rgba(29,78,216,0.1); }
     .feat-card .icon { font-size:2.2rem;margin-bottom:0.8rem;display:block; }
-    .feat-card h3 { color:#e2e8f0;font-size:1.05rem;margin-bottom:0.5rem; }
-    .feat-card p { color:#64748b;font-size:0.82rem;line-height:1.5; }
+    .feat-card h3 { color:#1a1a1a;font-size:1.05rem;margin-bottom:0.5rem; }
+    .feat-card p { color:#6b7280;font-size:0.82rem;line-height:1.5; }
     @media (max-width:720px) { .feat-grid { grid-template-columns:1fr 1fr; } }
     @media (max-width:480px) { .feat-grid { grid-template-columns:1fr; } }
     .stats-row { display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;text-align:center; }
-    .stat-item .num { font-size:2.5rem;font-weight:800;color:#38bdf8; }
-    .stat-item .label { color:#64748b;font-size:0.85rem;margin-top:0.3rem; }
-    .stat-item .sub { color:#475569;font-size:0.75rem; }
+    .stat-item .num { font-size:2.5rem;font-weight:800;color:#1d4ed8; }
+    .stat-item .label { color:#6b7280;font-size:0.85rem;margin-top:0.3rem; }
+    .stat-item .sub { color:#9ca3af;font-size:0.75rem; }
     @media (max-width:550px) { .stats-row { grid-template-columns:repeat(2,1fr); } }
-    .testimonials h2 { text-align:center;font-size:2rem;margin-bottom:2rem; }
-    .testimonials h2 em { color:#38bdf8;font-style:normal; }
+    .testimonials h2 { text-align:center;font-size:2rem;margin-bottom:2rem;color:#1d4ed8; }
+    .testimonials h2 em { color:#1d4ed8;font-style:normal; }
     .testi-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem; }
-    .testi-card { background:#1e293b;border-radius:12px;padding:2rem 1.5rem;border:1px solid #1e293b;transition:0.3s; }
-    .testi-card:hover { border-color:#334155; }
-    .testi-card .quote { color:#94a3b8;font-size:0.9rem;line-height:1.6;margin-bottom:1.2rem;font-style:italic; }
+    .testi-card { background:#f9fafb;border-radius:12px;padding:2rem 1.5rem;border:1px solid #e5e7eb;transition:0.3s; }
+    .testi-card:hover { border-color:#d1d5db; }
+    .testi-card .quote { color:#6b7280;font-size:0.9rem;line-height:1.6;margin-bottom:1.2rem;font-style:italic; }
     .testi-card .author { display:flex;align-items:center;gap:0.7rem; }
-    .testi-card .author .avatar { width:40px;height:40px;border-radius:50%;background:#334155;display:flex;align-items:center;justify-content:center;font-size:1.1rem; }
-    .testi-card .author .name { font-size:0.85rem;color:#e2e8f0; }
-    .testi-card .author .role { font-size:0.75rem;color:#64748b; }
+    .testi-card .author .avatar { width:40px;height:40px;border-radius:50%;background:#e5e7eb;display:flex;align-items:center;justify-content:center;font-size:1.1rem; }
+    .testi-card .author .name { font-size:0.85rem;color:#1a1a1a; }
+    .testi-card .author .role { font-size:0.75rem;color:#6b7280; }
     @media (max-width:720px) { .testi-grid { grid-template-columns:1fr; } }
-    .pricing h2 { text-align:center;font-size:2rem;margin-bottom:0.8rem; }
-    .pricing h2 em { color:#38bdf8;font-style:normal; }
-    .pricing > p { text-align:center;color:#64748b;margin-bottom:2.5rem; }
+    .pricing h2 { text-align:center;font-size:2rem;margin-bottom:0.8rem;color:#1d4ed8; }
+    .pricing h2 em { color:#1d4ed8;font-style:normal; }
+    .pricing > p { text-align:center;color:#6b7280;margin-bottom:2.5rem; }
     .pricing-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;align-items:start; }
-    .price-card { background:#1e293b;border-radius:12px;padding:2.5rem 1.5rem;border:1px solid #1e293b;transition:0.3s;text-align:center;position:relative; }
-    .price-card.featured { border-color:#38bdf8;transform:scale(1.03); }
-    .price-card.featured .badge { position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#38bdf8;color:#0f172a;font-size:0.7rem;font-weight:700;padding:0.2rem 0.8rem;border-radius:4px;text-transform:uppercase; }
-    .price-card:hover { border-color:#38bdf8;transform:translateY(-4px); }
+    .price-card { background:#f9fafb;border-radius:12px;padding:2.5rem 1.5rem;border:1px solid #e5e7eb;transition:0.3s;text-align:center;position:relative; }
+    .price-card.featured { border-color:#2563eb;transform:scale(1.03); }
+    .price-card.featured .badge { position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#2563eb;color:#ffffff;font-size:0.7rem;font-weight:700;padding:0.2rem 0.8rem;border-radius:4px;text-transform:uppercase; }
+    .price-card:hover { border-color:#2563eb;transform:translateY(-4px); }
     .price-card.featured:hover { transform:scale(1.03) translateY(-4px); }
-    .price-card .plan-name { color:#94a3b8;font-size:0.85rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.5rem; }
-    .price-card .price { font-size:2.5rem;font-weight:800;color:#e2e8f0;margin-bottom:0.2rem; }
-    .price-card .price span { font-size:1rem;color:#64748b;font-weight:400; }
-    .price-card .plan-desc { color:#64748b;font-size:0.82rem;margin-bottom:1.5rem; }
+    .price-card .plan-name { color:#6b7280;font-size:0.85rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.5rem; }
+    .price-card .price { font-size:2.5rem;font-weight:800;color:#1a1a1a;margin-bottom:0.2rem; }
+    .price-card .price span { font-size:1rem;color:#6b7280;font-weight:400; }
+    .price-card .plan-desc { color:#6b7280;font-size:0.82rem;margin-bottom:1.5rem; }
     .price-card ul { list-style:none;text-align:left;margin-bottom:1.5rem; }
-    .price-card ul li { color:#94a3b8;font-size:0.85rem;padding:0.4rem 0;border-bottom:1px solid #0f172a;display:flex;align-items:center;gap:0.4rem; }
-    .price-card ul li::before { content:'?';color:#22c55e;font-weight:700; }
-    .price-card .btn-price { background:#334155;color:#e2e8f0;padding:0.75rem 2rem;border-radius:8px;font-weight:600;font-size:0.9rem;border:none;cursor:pointer;transition:0.2s;width:100%; }
-    .price-card .btn-price:hover { background:#38bdf8;color:#0f172a; }
-    .price-card.featured .btn-price { background:#38bdf8;color:#0f172a; }
-    .price-card.featured .btn-price:hover { background:#0ea5e9; }
+    .price-card ul li { color:#6b7280;font-size:0.85rem;padding:0.4rem 0;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;gap:0.4rem; }
+    .price-card ul li::before { content:'✓';color:#2563eb;font-weight:700; }
+    .price-card .btn-price { background:#e5e7eb;color:#1a1a1a;padding:0.75rem 2rem;border-radius:8px;font-weight:600;font-size:0.9rem;border:none;cursor:pointer;transition:0.2s;width:100%; }
+    .price-card .btn-price:hover { background:#2563eb;color:#ffffff; }
+    .price-card.featured .btn-price { background:#2563eb;color:#ffffff; }
+    .price-card.featured .btn-price:hover { background:#1d4ed8; }
     @media (max-width:720px) { .pricing-grid { grid-template-columns:1fr; } .price-card.featured { transform:none; } .price-card.featured:hover { transform:translateY(-4px); } }
-    .faq h2 { text-align:center;font-size:2rem;margin-bottom:2rem; }
-    .faq h2 em { color:#38bdf8;font-style:normal; }
-    .faq-item { background:#1e293b;border-radius:10px;margin-bottom:0.6rem;overflow:hidden; }
-    .faq-q { padding:1.2rem 1.5rem;display:flex;justify-content:space-between;align-items:center;cursor:pointer;color:#e2e8f0;font-size:0.95rem;font-weight:500;transition:0.2s; }
-    .faq-q:hover { background:#0f172a; }
-    .faq-q .arrow { transition:0.3s;color:#64748b;font-size:0.8rem; }
+    .faq h2 { text-align:center;font-size:2rem;margin-bottom:2rem;color:#1d4ed8; }
+    .faq h2 em { color:#1d4ed8;font-style:normal; }
+    .faq-item { background:#f9fafb;border-radius:10px;margin-bottom:0.6rem;overflow:hidden;border:1px solid #e5e7eb; }
+    .faq-q { padding:1.2rem 1.5rem;display:flex;justify-content:space-between;align-items:center;cursor:pointer;color:#1a1a1a;font-size:0.95rem;font-weight:500;transition:0.2s; }
+    .faq-q:hover { background:#f3f4f6; }
+    .faq-q .arrow { transition:0.3s;color:#6b7280;font-size:0.8rem; }
     .faq-q.open .arrow { transform:rotate(180deg); }
-    .faq-a { padding:0 1.5rem;max-height:0;overflow:hidden;transition:0.3s;color:#94a3b8;font-size:0.88rem;line-height:1.6; }
+    .faq-a { padding:0 1.5rem;max-height:0;overflow:hidden;transition:0.3s;color:#6b7280;font-size:0.88rem;line-height:1.6; }
     .faq-a.open { padding:0 1.5rem 1.2rem;max-height:300px; }
-    .footer-cta { background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);text-align:center;border-top:1px solid #1e293b; }
-    .footer-cta h2 { font-size:2.2rem;margin-bottom:0.8rem; }
-    .footer-cta h2 em { color:#38bdf8;font-style:normal; }
-    .footer-cta p { color:#94a3b8;margin-bottom:1.5rem; }
-    .footer-cta .btn-big { background:#38bdf8;color:#0f172a;padding:1rem 2.5rem;border-radius:8px;font-weight:700;font-size:1rem;border:none;cursor:pointer;transition:0.2s; }
-    .footer-cta .btn-big:hover { background:#0ea5e9;transform:translateY(-2px); }
-    .footer-bottom { text-align:center;padding:1.5rem;color:#475569;font-size:0.78rem;border-top:1px solid #1e293b; }
+    .footer-cta { background:#f9fafb;text-align:center;border-top:1px solid #e5e7eb; }
+    .footer-cta h2 { font-size:2.2rem;margin-bottom:0.8rem;color:#1a1a1a; }
+    .footer-cta h2 em { color:#2563eb;font-style:normal; }
+    .footer-cta p { color:#6b7280;margin-bottom:1.5rem; }
+    .footer-cta .btn-big { background:#2563eb;color:#ffffff;padding:1rem 2.5rem;border-radius:8px;font-weight:700;font-size:1rem;border:none;cursor:pointer;transition:0.2s; }
+    .footer-cta .btn-big:hover { background:#1d4ed8;transform:translateY(-2px); }
+    .footer-bottom { text-align:center;padding:1.5rem;color:#9ca3af;font-size:0.78rem;border-top:1px solid #e5e7eb; }
+
+    /* Fade-in scroll animations */
+    .fade-in { opacity:0; transform:translateY(30px); transition:all 0.6s ease-out; }
+    .fade-in.visible { opacity:1; transform:translateY(0); }
   </style>
 </head>
 <body>
+  <style>
+  #nexasplash { position:fixed; top:0; left:0; width:100%; height:100%; background:#ffffff; z-index:99999; display:flex; align-items:center; justify-content:center; flex-direction:column; animation:nexafade 0.6s ease-out 1.5s forwards; }
+  #nexasplash .nx-logo { font-size:48px; font-weight:900; color:#ea580c; letter-spacing:3px; font-family:system-ui,-apple-system,sans-serif; animation:nxpop 0.5s ease-out; }
+  #nexasplash .nx-sub { font-size:13px; color:#9ca3af; margin-top:8px; letter-spacing:5px; text-transform:uppercase; }
+  @keyframes nexafade { to { opacity:0; pointer-events:none; } }
+  @keyframes nxpop { 0% { opacity:0; transform:scale(0.5); } 70% { transform:scale(1.1); } 100% { opacity:1; transform:scale(1); } }
+  </style>
+  <div id="nexasplash">
+    <div class="nx-logo">NEXAGAZE</div>
+    <div class="nx-sub">AI-Powered Solutions</div>
+  </div>
   <nav class="nav">
     <div class="logo">Behavior<span>AI</span></div>
     <div class="nav-links">
@@ -171,36 +187,36 @@
 
   <section class="section features" data-section="features" data-track="features-section">
     <div class="section-inner">
-      <h2>Why <em>BehaviorAgent</em>?</h2>
-      <p>Six powerful modules working together to maximize your conversions</p>
+      <h2 class="fade-in">Why <em>BehaviorAgent</em>?</h2>
+      <p class="fade-in">Six powerful modules working together to maximize your conversions</p>
       <div class="feat-grid">
-        <div class="feat-card" data-track="feat-real-time">
-          <span class="icon">?</span>
+        <div class="feat-card fade-in" data-track="feat-real-time">
+          <span class="icon">📡</span>
           <h3>Real-Time Tracking</h3>
           <p>Every hover, scroll, and click is captured instantly. Know exactly what your visitors are interested in.</p>
         </div>
-        <div class="feat-card" data-track="feat-ai-analysis">
-          <span class="icon">??</span>
+        <div class="feat-card fade-in" data-track="feat-ai-analysis">
+          <span class="icon">🧠</span>
           <h3>AI Sentiment Analysis</h3>
           <p>Our AI reads behavior patterns to detect if a user is interested, confused, price-sensitive, or about to leave.</p>
         </div>
-        <div class="feat-card" data-track="feat-smart-discount">
-          <span class="icon">??</span>
+        <div class="feat-card fade-in" data-track="feat-smart-discount">
+          <span class="icon">🏷️</span>
           <h3>Smart Discount Engine</h3>
           <p>Automatically calculates and offers the perfect discount percentage based on user behavior and intent.</p>
         </div>
-        <div class="feat-card" data-track="feat-exit">
-          <span class="icon">??</span>
+        <div class="feat-card fade-in" data-track="feat-exit">
+          <span class="icon">🚪</span>
           <h3>Exit Intent Detection</h3>
           <p>When a user is about to leave, our system triggers a personalized offer to bring them back.</p>
         </div>
-        <div class="feat-card" data-track="feat-toast">
-          <span class="icon">??</span>
+        <div class="feat-card fade-in" data-track="feat-toast">
+          <span class="icon">💬</span>
           <h3>Smart Notifications</h3>
           <p>Non-intrusive toast messages appear at the perfect moment with tailored discounts and suggestions.</p>
         </div>
-        <div class="feat-card" data-track="feat-analytics">
-          <span class="icon">??</span>
+        <div class="feat-card fade-in" data-track="feat-analytics">
+          <span class="icon">📊</span>
           <h3>Behavior Analytics</h3>
           <p>Detailed reports on user behavior patterns, popular services, and conversion optimization insights.</p>
         </div>
@@ -211,36 +227,36 @@
   <section class="section" data-section="stats" style="min-height:50vh;" data-track="stats-section">
     <div class="section-inner">
       <div class="stats-row">
-        <div class="stat-item" data-track="stat-clients"><div class="num">500+</div><div class="label">Active Clients</div><div class="sub">Trust our platform</div></div>
-        <div class="stat-item" data-track="stat-satisfaction"><div class="num">98%</div><div class="label">Satisfaction Rate</div><div class="sub">Customer approved</div></div>
-        <div class="stat-item" data-track="stat-conversions"><div class="num">3.2x</div><div class="label">Avg Conversion Lift</div><div class="sub">Compared to baseline</div></div>
-        <div class="stat-item" data-track="stat-revenue"><div class="num">$2.4M</div><div class="label">Revenue Generated</div><div class="sub">For our clients</div></div>
+        <div class="stat-item fade-in" data-track="stat-clients"><div class="num">500+</div><div class="label">Active Clients</div><div class="sub">Trust our platform</div></div>
+        <div class="stat-item fade-in" data-track="stat-satisfaction"><div class="num">98%</div><div class="label">Satisfaction Rate</div><div class="sub">Customer approved</div></div>
+        <div class="stat-item fade-in" data-track="stat-conversions"><div class="num">3.2x</div><div class="label">Avg Conversion Lift</div><div class="sub">Compared to baseline</div></div>
+        <div class="stat-item fade-in" data-track="stat-revenue"><div class="num">$2.4M</div><div class="label">Revenue Generated</div><div class="sub">For our clients</div></div>
       </div>
     </div>
   </section>
 
   <section class="section testimonials" data-section="testimonials" data-track="testimonials-section">
     <div class="section-inner">
-      <h2>What Our <em>Clients Say</em></h2>
+      <h2 class="fade-in">What Our <em>Clients Say</em></h2>
       <div class="testi-grid">
-        <div class="testi-card" data-track="testimonial-1">
+        <div class="testi-card fade-in" data-track="testimonial-1">
           <div class="quote">"BehaviorAgent transformed how we engage with customers. The AI caught price-sensitive users and offered them exactly the right discount. Our revenue jumped 40% in two months."</div>
           <div class="author">
-            <div class="avatar">?????</div>
+            <div class="avatar">👩‍💼</div>
             <div><div class="name">Sarah Chen</div><div class="role">CEO, TechStore.io</div></div>
           </div>
         </div>
-        <div class="testi-card" data-track="testimonial-2">
+        <div class="testi-card fade-in" data-track="testimonial-2">
           <div class="quote">"The exit-intent detection is a game changer. We recovered 25% of abandoning visitors with AI-personalized offers. The toast notifications feel natural, not spammy."</div>
           <div class="author">
-            <div class="avatar">?????</div>
+            <div class="avatar">👨‍💻</div>
             <div><div class="name">Marcus Johnson</div><div class="role">Founder, DevAgency</div></div>
           </div>
         </div>
-        <div class="testi-card" data-track="testimonial-3">
-          <div class="quote">"Setup was incredibly simple. Within an hour we had AI behavior tracking live on our site. The sentiment analysis is scarily accurate � it knows when a customer is confused before they do."</div>
+        <div class="testi-card fade-in" data-track="testimonial-3">
+          <div class="quote">"Setup was incredibly simple. Within an hour we had AI behavior tracking live on our site. The sentiment analysis is scarily accurate — it knows when a customer is confused before they do."</div>
           <div class="author">
-            <div class="avatar">?????</div>
+            <div class="avatar">👩‍🎤</div>
             <div><div class="name">Priya Patel</div><div class="role">Marketing Lead, SaaSPro</div></div>
           </div>
         </div>
@@ -250,10 +266,10 @@
 
   <section class="section pricing" data-section="pricing" data-track="pricing-section">
     <div class="section-inner">
-      <h2>Simple <em>Pricing</em></h2>
-      <p>Choose the plan that fits your business. All plans include AI behavior tracking.</p>
+      <h2 class="fade-in">Simple <em>Pricing</em></h2>
+      <p class="fade-in">Choose the plan that fits your business. All plans include AI behavior tracking.</p>
       <div class="pricing-grid">
-        <div class="price-card" data-track="pricing-starter">
+        <div class="price-card fade-in" data-track="pricing-starter">
           <div class="plan-name">Starter</div>
           <div class="price">$29<span>/mo</span></div>
           <div class="plan-desc">Perfect for small businesses and startups</div>
@@ -266,7 +282,7 @@
           </ul>
           <button class="btn-price" data-track="price-starter-btn">Choose Starter</button>
         </div>
-        <div class="price-card featured" data-track="pricing-growth">
+        <div class="price-card featured fade-in" data-track="pricing-growth">
           <div class="badge">Popular</div>
           <div class="plan-name">Growth</div>
           <div class="price">$79<span>/mo</span></div>
@@ -281,7 +297,7 @@
           </ul>
           <button class="btn-price" data-track="price-growth-btn">Choose Growth</button>
         </div>
-        <div class="price-card" data-track="pricing-enterprise">
+        <div class="price-card fade-in" data-track="pricing-enterprise">
           <div class="plan-name">Enterprise</div>
           <div class="price">$199<span>/mo</span></div>
           <div class="plan-desc">For large businesses with custom needs</div>
@@ -301,25 +317,25 @@
 
   <section class="section faq" data-section="faq" data-track="faq-section">
     <div class="section-inner">
-      <h2>Frequently Asked <em>Questions</em></h2>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">How does the AI behavior tracking work? <span class="arrow">?</span></div>
-        <div class="faq-a">BehaviorAgent uses advanced AI models (Ollama minimax locally) to analyze every user interaction � hovers, scrolls, clicks, and mouse movements. It detects patterns and intent in real-time, then triggers personalized responses.</div>
+      <h2 class="fade-in">Frequently Asked <em>Questions</em></h2>
+      <div class="faq-item fade-in">
+        <div class="faq-q" onclick="toggleFaq(this)">How does the AI behavior tracking work? <span class="arrow">▼</span></div>
+        <div class="faq-a">BehaviorAgent uses advanced AI models (Ollama minimax locally) to analyze every user interaction — hovers, scrolls, clicks, and mouse movements. It detects patterns and intent in real-time, then triggers personalized responses.</div>
       </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">Is my customer data secure? <span class="arrow">?</span></div>
+      <div class="faq-item fade-in">
+        <div class="faq-q" onclick="toggleFaq(this)">Is my customer data secure? <span class="arrow">▼</span></div>
         <div class="faq-a">Absolutely. All behavior data is processed locally on your server using our Ollama AI. No data leaves your infrastructure. We never store personal identifiable information in the behavior logs.</div>
       </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">How are discounts calculated? <span class="arrow">?</span></div>
+      <div class="faq-item fade-in">
+        <div class="faq-q" onclick="toggleFaq(this)">How are discounts calculated? <span class="arrow">▼</span></div>
         <div class="faq-a">The AI evaluates multiple factors: how long a user hovers on pricing, how many times they scroll through services, their exit intent signals, and overall engagement patterns. It then suggests an optimal discount (0-30%) tailored to that user.</div>
       </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">Can I customize the toast messages? <span class="arrow">?</span></div>
+      <div class="faq-item fade-in">
+        <div class="faq-q" onclick="toggleFaq(this)">Can I customize the toast messages? <span class="arrow">▼</span></div>
         <div class="faq-a">Yes! You can customize the message templates, colors, positioning, and timing in the admin dashboard. The AI will use your templates while dynamically filling in the service name and discount percentage.</div>
       </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">What types of businesses benefit most? <span class="arrow">?</span></div>
+      <div class="faq-item fade-in">
+        <div class="faq-q" onclick="toggleFaq(this)">What types of businesses benefit most? <span class="arrow">▼</span></div>
         <div class="faq-a">Any business with multiple services or products benefits tremendously. E-commerce stores, SaaS platforms, digital agencies, and service-based businesses see the highest conversion improvements (averaging 30-50% lift).</div>
       </div>
     </div>
@@ -327,13 +343,13 @@
 
   <section class="section footer-cta" data-section="cta" style="min-height:50vh;" data-track="cta-section">
     <div class="section-inner">
-      <h2>Ready to <em>Boost Conversions</em>?</h2>
-      <p>Join 500+ businesses using BehaviorAgent to understand and engage their customers better.</p>
-      <button class="btn-big" data-track="cta-button" onclick="window.location.href='/services.html#checkout'">Start Your Free Trial</button>
+      <h2 class="fade-in">Ready to <em>Boost Conversions</em>?</h2>
+      <p class="fade-in">Join 500+ businesses using BehaviorAgent to understand and engage their customers better.</p>
+      <button class="btn-big fade-in" data-track="cta-button" onclick="window.location.href='/services.html#checkout'">Start Your Free Trial</button>
     </div>
   </section>
 
-  <div class="footer-bottom">&copy; 2026 BehaviorAgent &mdash; AI-Powered Engagement Platform. All rights reserved.</div>
+  <div class="footer-bottom">Nexagaze — Built by Nexagaze Founder Bilal</div>
 
   <div id="toastContainer"></div>
   <script src="/behavior.js"></script>
@@ -367,7 +383,7 @@
       } else {
         r.innerHTML = sorted.length ? sorted.map(s =>
           `<div class="search-result" onclick="selectSearch('${s.name}')"><span class="sr-name">${s.name}</span><span class="sr-price">$${s.price}/${s.period}</span></div>`
-        ).join('') : '<div class="search-result" style="cursor:default;border-color:transparent;justify-content:center;color:#64748b;">No services found</div>';
+        ).join('') : '<div class="search-result" style="cursor:default;border-color:transparent;justify-content:center;color:#6b7280;">No services found</div>';
       }
     }
     function selectSearch(name) {
@@ -383,12 +399,17 @@
       const answer = el.nextElementSibling;
       answer.classList.toggle('open');
     }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
   </script>
 
-  <div style="text-align:center;padding:1rem;color:#475569;font-size:0.75rem;border-top:1px solid #1e293b;">
-    nexagaze project &mdash; built by Founder Bilal &bull;
-    <a href="mailto:ai@nexagaze.com" style="color:#64748b;">ai@nexagaze.com</a> &bull;
-    <a href="https://wa.me/9203103860653" style="color:#64748b;">03103860653</a>
+  <div style="text-align:center;padding:1rem;color:#9ca3af;font-size:0.75rem;border-top:1px solid #e5e7eb;">
+    nexagaze project — built by Founder Bilal &bull;
+    <a href="mailto:ai@nexagaze.com" style="color:#6b7280;">ai@nexagaze.com</a> &bull;
+    <a href="https://wa.me/9203103860653" style="color:#6b7280;">03103860653</a>
   </div>
 </body>
 </html>
